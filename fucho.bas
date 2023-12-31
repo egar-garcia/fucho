@@ -1,6 +1,6 @@
   rem Fucho
   rem Author: Egar Garcia
-  rem Last Revision 2023-12-21
+  rem Last Revision 2023-12-31
 
   set kernel_options player1colors playercolors pfcolors
   set tv ntsc
@@ -56,7 +56,7 @@
   const SCORE_LIMIT           =   4
 
   data BALL_SPEED_CYCLES
-    0, 8, 8, 16
+    0, 2, 5, 30
 end
 
   dim   balldx                =   a
