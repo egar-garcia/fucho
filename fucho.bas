@@ -1,6 +1,6 @@
   rem Fucho
   rem Author: Egar Garcia
-  rem Last Revision 2023-12-31
+  rem Last Revision 2024-01-03
 
   set kernel_options player1colors playercolors pfcolors
   set tv ntsc
@@ -49,7 +49,6 @@
 
   const KICKOFF_DIST          =  15
 
-  const INTRO                 = $FF
   const STOPPED               =   0
   const IN_PROGRESS           =   1
 
@@ -106,7 +105,6 @@ end
     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 end
 
-gamereset
   pfscore1 = 0
   pfscore2 = 0
   gosub stop_game
@@ -114,7 +112,8 @@ gamereset
 mainloop
   gosub handle_sounds
 
-  if switchreset then goto gamereset
+  rem Start or Re-Start the game
+  if switchreset then gosub start_game
 
   if gamestate = STOPPED     then gosub handle_stopped_game
   if gamestate = IN_PROGRESS then gosub handle_game_in_progress
@@ -123,13 +122,15 @@ mainloop
   goto mainloop
 
 handle_stopped_game
-  if joy0fire then gosub start_game
-  if joy1fire then gosub start_game
+  if joy0fire || joy1fire then gosub start_game
   return
 
 handle_game_in_progress
   rem Pause Game
   if switchbw then return
+
+  rem Terminate Game
+  if switchselect then gosub stop_game : return
 
   if goalcyclecounter = 0 then gosub check_for_goal
   if goalcyclecounter > 0 then gosub handle_goal_celebration : return
