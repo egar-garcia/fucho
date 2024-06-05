@@ -1,6 +1,6 @@
   rem Fucho
   rem Author: Egar Garcia
-  rem Last Revision 2024-01-03
+  rem Last Revision 2024-06-04
 
   set kernel_options player1colors playercolors pfcolors
   set tv ntsc
@@ -830,6 +830,7 @@ handle_sounds
   if aud0timer = 1 then aud0timer = 0 : gosub clear_sound0
   if aud1timer > 1 then aud1timer = aud1timer - 1
   if aud1timer = 1 then aud1timer = 0 : gosub clear_sound1
+  return
 
 clear_sound0
   AUDV0 = 0
