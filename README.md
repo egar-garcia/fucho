@@ -10,7 +10,7 @@ You can find the last built ROM in the [releases](https://github.com/egar-garcia
 directory, which can be played in an Atari 2600 emulator such as
 [Stella](https://stella-emu.github.io/) or [Javatari](https://javatari.org/).
 
-Note: You can directly load the rom and play the game in Javatari by following this link: https://github.com/egar-garcia/fucho/releases/download/v0.1-beta/fucho.bin.
+Note: You can directly load the rom and play the game in Javatari by following this link: https://javatari.org/?rom=https://github.com/egar-garcia/fucho/releases/download/v0.1-beta/fucho.bin.
 
 ## Controls
 
