@@ -51,6 +51,8 @@
 
   const STOPPED               =   0
   const IN_PROGRESS           =   1
+  const SELECT_PRESSED        =   2
+  const RESET_PRESSED         =   3
 
   const SCORE_LIMIT           =   4
 
@@ -112,17 +114,32 @@ end
 mainloop
   gosub handle_sounds
 
+  if gamestate = SELECT_PRESSED then gosub handle_select_pressed : goto mainloop_draw_screen
+  if gamestate = RESET_PRESSED then gosub handle_reset_pressed : goto mainloop_draw_screen
+
   rem Start or Re-Start the game
-  if switchreset then gosub start_game
+  if switchreset then gosub start_game : gamestate = RESET_PRESSED : goto mainloop_draw_screen
 
   if gamestate = STOPPED     then gosub handle_stopped_game
   if gamestate = IN_PROGRESS then gosub handle_game_in_progress
 
+mainloop_draw_screen
   drawscreen
   goto mainloop
 
+
+handle_select_pressed
+  if switchselect then return
+  gamestate = STOPPED
+  return
+
+handle_reset_pressed
+  if switchreset then return
+  gamestate = IN_PROGRESS
+  return
+
 handle_stopped_game
-  if joy0fire || joy1fire then gosub start_game
+  if joy0fire || joy1fire then gosub start_game : gamestate = IN_PROGRESS
   return
 
 handle_game_in_progress
@@ -130,11 +147,11 @@ handle_game_in_progress
   if switchbw then return
 
   rem Terminate Game
-  if switchselect then gosub stop_game : return
+  if switchselect then gosub stop_game : gamestate = SELECT_PRESSED : return
 
   if goalcyclecounter = 0 then gosub check_for_goal
   if goalcyclecounter > 0 then gosub handle_goal_celebration : return
-  if p0score >= SCORE_LIMIT || p1score >= SCORE_LIMIT then gosub stop_game : return
+  if p0score >= SCORE_LIMIT || p1score >= SCORE_LIMIT then gosub stop_game : gamestate = STOPPED : return
 
   if collision(player0, player1) then gosub manage_players_collision
   if collision(ball, player0)    then gosub manage_ball_p0_collision
@@ -242,7 +259,6 @@ end
     $0A
     $0A
 end
-  gamestate = STOPPED
   pfscorecolor = $04
   gosub set_ball_mid_position
   gosub set_p0_init_position
@@ -284,7 +300,6 @@ end
     $FC
     $FC
 end
-  gamestate = IN_PROGRESS
   pfscorecolor = $0F
   pfscore1 = 0
   pfscore2 = 0
